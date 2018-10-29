@@ -1,0 +1,5 @@
+ChangeLog:
+
+Version 0.9.0
+	Plugin: Science Lab Info
+	Part:   Mobile Processing Lab MPL-LG-6
