@@ -1,0 +1,24 @@
+{
+    "spec_version" : "v1.4",
+    "identifier"   : "ScienceLabInfo",
+    "$kref"        : "#/ckan/github/yalov/CommNetAntennasExtension",
+    "name"         : "Science Lab Info (and 6-Crew Lab)",
+    "author"       : "flart",
+    "abstract"     : "More info about all science labs in the editor/flight + new Science Lab MPL-LG-6 — enhanced heavier stock lab with enabled extra sits.",
+    "license"      : "GPL-3.0",
+    "$vref" : "#/ckan/ksp-avc",
+    "resources" : {
+        "homepage": "https://forum.kerbalspaceprogram.com/index.php?/topic/177292-*"
+    },
+    "conflicts": [
+        { "name": "SixCrewScienceLab" }
+    ],
+    "depends": [
+        { "name": "ModuleManager" }
+    ],
+    "suggests": [
+        { "name": "SpeedUnitAnnex" },
+	{ "name": "CommunityPartsTitles" },
+	{ "name": "CommNetAntennasExtension" }
+    ]
+}
