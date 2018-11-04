@@ -17,6 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Localization", "Localization", "{2CACE644-FDB7-4779-A7CB-EACABF02CEC0}"
 	ProjectSection(SolutionItems) = preProject
 		GameData\ScienceLabInfo\localization\en-us.cfg = GameData\ScienceLabInfo\localization\en-us.cfg
+		GameData\ScienceLabInfo\localization\ru.cfg = GameData\ScienceLabInfo\localization\ru.cfg
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parts", "Parts", "{F46511BB-1273-464F-AF4B-32252A0BB76E}"
