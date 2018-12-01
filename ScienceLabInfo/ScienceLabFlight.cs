@@ -4,11 +4,11 @@ namespace ScienceLabInfo
 {
     public class ModuleScienceInfo : PartModule
     {
-        [KSPField(guiActive = true, guiName = "#SLI_ScientistsRateModificator")]
-        string ScientistsModificator_str;
-
         [KSPField(guiActive = false, guiName = "#SLI_LabRateModificator", advancedTweakable = true)]
         string LabModificator_str;
+
+        [KSPField(guiActive = true, guiName = "#SLI_ScientistsRateModificator")]
+        string ScientistsModificator_str;
 
         [KSPField(guiActive = true, guiName = "#SLI_DatatoScienceConversion", advancedTweakable = true)]
         string DataScienceConversion_str;

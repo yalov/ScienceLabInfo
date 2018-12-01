@@ -27,7 +27,7 @@ set GAMEDIR=ScienceLabInfo
 set GAMEDATA="GameData\"
 set VERSIONFILE=%GAMEDIR%.version
 set LICENSE=%GAMEDIR%-License.txt
-set CHANGELOG=ChangeLog.txt
+set CHANGELOG=ChangeLog.md
 
 set RELEASEDIR="Releases"
 set ZIP="c:\Program Files\7-zip\7z.exe"
@@ -73,5 +73,6 @@ cd %GAMEDATA%\..
 set FILE="%RELEASEDIR%\%GAMEDIR%-v%VERSION%.zip"
 IF EXIST %FILE% del /F %FILE%
 %ZIP% a -tzip %FILE% GameData
+IF EXIST Extras %ZIP% a -tzip %FILE% Extras
 
 pause

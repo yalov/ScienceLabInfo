@@ -1,7 +1,7 @@
 
 @echo off
 
-set GAMEPATH=c:\Users\User\Games\Kerbal Space Program 1.5.1
+set GAMEPATH=c:\Users\User\Games\Kerbal Space Program 1.6.1
 
 set MODNAME=ScienceLabInfo
 
@@ -15,7 +15,7 @@ REM // copy dll and version in Rep/GameData to GAMEPATH
 REM mkdir "%GAMEPATH%\GameData\%MODNAME%"
 xcopy "GameData\%MODNAME%" "%GAMEPATH%\GameData\%MODNAME%\" /Y /S /I
 
-xcopy "GameData\%MODNAME%" "%GAMEPATH2%\GameData\%MODNAME%\" /Y /S /I
+rem xcopy "GameData\%MODNAME%" "%GAMEPATH2%\GameData\%MODNAME%\" /Y /S /I
 
 rem pause
 

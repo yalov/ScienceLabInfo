@@ -17,8 +17,8 @@
         { "name": "ModuleManager" }
     ],
     "suggests": [
-        { "name": "SpeedUnitAnnex" },
 	{ "name": "CommunityPartsTitles" },
-	{ "name": "CommNetAntennasExtension" }
+	{ "name": "CommNetAntennasInfo" },
+	{ "name": "ScienceSituationInfo" }
     ]
 }
