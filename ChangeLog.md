@@ -1,4 +1,4 @@
-ChangeLog:
+## ChangeLog:
 
 ## Version 0.9.5
  * Plugin: 
