@@ -1,32 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ScienceLabInfo
 {
     public class ModuleScienceInfo : PartModule
     {
-        [KSPField(guiActive = false, guiName = "#SLI_LabRateModificator", advancedTweakable = true)]
-        string LabModificator_str;
+        [KSPField(guiActive = false, guiName = "#SLI_LabRateModifier", advancedTweakable = true)]
+        string LabModifier_str;
 
-        [KSPField(guiActive = true, guiName = "#SLI_ScientistsRateModificator")]
-        string ScientistsModificator_str;
+        [KSPField(guiActive = false, guiName = "#SLI_ScientistsRateModifier")]
+        string ScientistsModifier_str;
 
-        [KSPField(guiActive = true, guiName = "#SLI_DatatoScienceConversion", advancedTweakable = true)]
+        [KSPField(guiActive = false, guiName = "#SLI_DatatoScienceConversion", advancedTweakable = true)]
         string DataScienceConversion_str;
 
-        ModuleScienceConverter msc;
+        ModuleScienceConverter ModuleSC;
 
         public void Start()
         {
-            msc = part.Modules.GetModule<ModuleScienceConverter>();
+            List<ModuleScienceConverter> listMSC = part.Modules.GetModules<ModuleScienceConverter>();
 
-            DataScienceConversion_str = "1:" + msc.scienceMultiplier;
+            if (listMSC.Count != 1)
+                return;
 
-            double labModificator = msc.dataProcessingMultiplier / 0.5 * Math.Pow(10, 7 - msc.researchTime);
+            ModuleSC = listMSC[0];
 
-            if (labModificator != 1.0)
+            Fields["ScientistsModifier_str"].guiActive = true;
+            Fields["DataScienceConversion_str"].guiActive = true; 
+            DataScienceConversion_str = "1:" + ModuleSC.scienceMultiplier;
+
+            double labModifier = ModuleSC.dataProcessingMultiplier / 0.5 * Math.Pow(10, 7 - ModuleSC.researchTime);
+
+            if (labModifier != 1.0)
             {
-                Fields["LabModificator_str"].guiActive = true;
-                LabModificator_str = String.Format("×{0:F2}", labModificator);
+                Fields["LabModifier_str"].guiActive = true;
+                LabModifier_str = String.Format("×{0:F2}", labModifier);
             }
         }
 
@@ -43,7 +51,7 @@ namespace ScienceLabInfo
                 }
             }
 
-            ScientistsModificator_str = String.Format("×{0:F2}", ScientistCount + Stars * msc.scientistBonus);
+            ScientistsModifier_str = String.Format("×{0:F2}", ScientistCount + Stars * ModuleSC.scientistBonus);
         }
     }
 }

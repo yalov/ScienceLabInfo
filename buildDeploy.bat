@@ -1,22 +1,23 @@
 
 @echo off
+echo BUILDDEPLOY.BAT
 
-set GAMEPATH=c:\Users\User\Games\Kerbal Space Program 1.6.1
+rem v2
+rem instruction in the BUILDRELEASE.BAT
 
+rem Set variables here
+set GAMEPATH=c:\Users\User\Games\Kerbal Space Program 1.7.0
 set MODNAME=ScienceLabInfo
 
-echo %GAMEPATH%
+REM copy dll and .version to Repository/GameData
+REM /Y	Suppresses prompting to confirm that you want to overwrite an existing destination file.
+REM /Q	Suppresses the display of files
+REM /I	Suppresses prompting to specify whether Destination is a file or a directory
+xcopy "%1%2"              "GameData\%MODNAME%\Plugins\" /Y /I /Q
+xcopy "%MODNAME%.version" "GameData\%MODNAME%\"         /Y /I /Q
 
-REM // copy dll and version to Rep/GameData
-xcopy "%1%2" "GameData\%MODNAME%\Plugins\" /Y
-xcopy "%MODNAME%.version" "GameData\%MODNAME%\" /Y 
-
-REM // copy dll and version in Rep/GameData to GAMEPATH
+REM copy Repository/GameData to GAMEPATH
 REM mkdir "%GAMEPATH%\GameData\%MODNAME%"
-xcopy "GameData\%MODNAME%" "%GAMEPATH%\GameData\%MODNAME%\" /Y /S /I
+REM /S	recursive copuing un-empty directories
 
-rem xcopy "GameData\%MODNAME%" "%GAMEPATH2%\GameData\%MODNAME%\" /Y /S /I
-
-rem pause
-
-rem start /d "%GAMEPATH%" KSP_x64.exe
+xcopy "GameData\%MODNAME%" "%GAMEPATH%\GameData\%MODNAME%\" /Y /I /Q /S

@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		buildRelease.bat = buildRelease.bat
 		ChangeLog.md = ChangeLog.md
 		README.md = README.md
+		GameData\ScienceLabInfo\Plugins\ScienceLabInfo.cfg = GameData\ScienceLabInfo\Plugins\ScienceLabInfo.cfg
 		ScienceLabInfo.version = ScienceLabInfo.version
 	EndProjectSection
 EndProject

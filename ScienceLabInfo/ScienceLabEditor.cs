@@ -35,7 +35,7 @@ namespace ScienceLabInfo
                     if (modinfo.moduleName == moduleSL.GUIName)
                     {
 
-                        double lab_modificator = moduleSC.dataProcessingMultiplier / 0.5 * Math.Pow(10, 7 - moduleSC.researchTime);
+                        double lab_modifier = moduleSC.dataProcessingMultiplier / 0.5 * Math.Pow(10, 7 - moduleSC.researchTime);
 
                         modinfo.info = 
                               Localizer.Format("#SLI_ScientistsRequired", moduleSL.crewsRequired)
@@ -45,7 +45,7 @@ namespace ScienceLabInfo
                             + Localizer.Format("#SLI_DatatoScience", moduleSC.scienceMultiplier)
 
                             + Localizer.Format("#SLI_ResearchSpeed")
-                            + " " + Localizer.Format("#SLI_TheLabModificator", lab_modificator.ToString("#0.0#"))
+                            + " " + Localizer.Format("#SLI_TheLabModifier", lab_modifier.ToString("#0.0#"))
                             + " " + Localizer.Format("#SLI_ScientistLevelBonus", (moduleSC.scientistBonus).ToString("+#0%;-#0%"))
 
                             + Localizer.Format("#SLI_DataBonuses")
