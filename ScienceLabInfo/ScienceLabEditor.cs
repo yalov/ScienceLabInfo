@@ -26,7 +26,7 @@ namespace ScienceLabInfo
                 ModuleScienceConverter moduleSC = modulesSC[0];
                 ModuleScienceLab moduleSL = modulesSL[0];
 
-                moduleSL.Fields.ToString();
+                //moduleSL.Fields.ToString();
 
                 List<AvailablePart.ModuleInfo> modinfos = part.moduleInfos;
 

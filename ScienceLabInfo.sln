@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceLabInfo", "ScienceLabInfo\ScienceLabInfo.csproj", "{2DD8A562-8999-4719-8848-4436AD85FECA}"
 EndProject
@@ -23,7 +23,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Localization", "Localizatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parts", "Parts", "{F46511BB-1273-464F-AF4B-32252A0BB76E}"
 	ProjectSection(SolutionItems) = preProject
-		GameData\ScienceLabInfo\Parts\Part_Large_Crewed_Lab_6.cfg = GameData\ScienceLabInfo\Parts\Part_Large_Crewed_Lab_6.cfg
+		GameData\ScienceLabInfo\Parts\Large_Crewed_Lab_6.cfg = GameData\ScienceLabInfo\Parts\Large_Crewed_Lab_6.cfg
+		GameData\ScienceLabInfo\Parts\Large_Crewed_Lab_DSD18.cfg = GameData\ScienceLabInfo\Parts\Large_Crewed_Lab_DSD18.cfg
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{4E2499CD-5D57-4BD6-99DD-C9971BF5920A}"
+	ProjectSection(SolutionItems) = preProject
+		GameData\ScienceLabInfo\Patches\Patch_KerbalHealth.cfg = GameData\ScienceLabInfo\Patches\Patch_KerbalHealth.cfg
 	EndProjectSection
 EndProject
 Global
