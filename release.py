@@ -1,11 +1,13 @@
 """requirements: 
-Python3 
-pip install GitPython PyGithub
+Python3.9 
+pip install pyperclip GitPython PyGithub
 ./release_spacedock_utils.py
+make sure, that ssh is set up
+    copy private key to ~/.ssh/
 
 Public domain license.
-author: flart, version: 10
 https://github.com/yalov/SpeedUnitAnnex/blob/master/release.py
+version: 17
 
 Script loads release-arhive to github and spacedock
 you need to set values in the release.json
@@ -22,23 +24,13 @@ import sys
 import json
 import os.path
 import re
-from shutil import copy
+from shutil import copy, make_archive
 import zipfile
 
-from git import Repo
-from github import Github
-from github import GithubException
-
+from release_github import PublishToGithub
 from release_spacedock_utils import GetSpacedockKSPVersions
 from release_spacedock_utils import GetSpacedockModDetails
 from release_spacedock_utils import PublishToSpacedock
-
-
-def zipdir(path, ziph):
-    """ recursive archiving path folder to ziph (zipfile handle) """
-    for root, _, files in os.walk(path):
-        for file in files:
-            ziph.write(os.path.join(root, file))
 
 
 def archive_to(file):
@@ -46,24 +38,26 @@ def archive_to(file):
     if os.path.exists(file):
         os.remove(file)
 
-    zipf = zipfile.ZipFile(file, 'x', zipfile.ZIP_DEFLATED)
     if os.path.exists("GameData"):
-        zipdir("GameData", zipf)
+        make_archive(file.removesuffix(".zip"), 'zip', "GameData")
     if os.path.exists("Extras"):
-        zipdir("Extras", zipf)
-    zipf.close()
-    print("{}, files: {}, size: {} byte"
-          .format("valid ZIP" if zipfile.is_zipfile(file) else "FAIL",
-                  len(zipf.infolist()), os.path.getsize(file)))
+        make_archive(file.removesuffix(".zip"), 'zip', "Extras")
+
+    print("Size: {} byte"
+          .format(os.path.getsize(file)))
 
 
-def get_version(version_file, obj="VERSION"):
+def get_version(version_file, obj="VERSION", ignore_patch = False):
     """ get version from the version_file """
     data = json.load(open(version_file))
     if obj not in data:
         return "NO"
     ver = data[obj]
+    if ignore_patch:
+        return "{}.{}".format(ver["MAJOR"], ver["MINOR"])
+
     version = "{}.{}.{}".format(ver["MAJOR"], ver["MINOR"], ver["PATCH"])
+
     if "BUILD" in ver and ver["BUILD"] != 0:
         version += '.' + str(ver["BUILD"])
     return version
@@ -71,58 +65,11 @@ def get_version(version_file, obj="VERSION"):
 
 def get_description(path):
     """ Get description of the last version in the changelog """
-    version = r"(#+ )?(Version )?\d\.\d\.\d(\.\d)?(/\d\.\d\.\d(\.\d)?)?( [(\"\')][^\n]*[)\"\')])?"
+    version = r"(#+ )?(Version )?\d(\d)?\.\d(\d)?\.\d(\d)?(\.\d)?(/\d(\d)?\.\d(\d)?\.\d(\d)?(\.\d)?)?( [(\"\')][^\n]*[)\"\')])?"
     changelog = open(path).read()
     pattern = r"\n\s*\n{0}\n(?P<last>.+?)\n({0}|\n\Z|\Z)".format(version)
     desc = re.search(pattern, changelog, re.DOTALL).group('last')
     return desc
-
-
-def publish_to_github(token, mod_name, version, last_change, is_draft, is_prerelease, zip_file):
-    """create tag and publish a release"""
-    sys.stdout.write(" * Github connection...")
-    github = None
-    repo = None
-    user = None
-
-    try:
-        github = Github(token)
-        user = github.get_user()
-    except Exception:
-        print(" failed.")
-        sys.exit(-1)
-
-    try:
-        repo = user.get_repo(mod_name)
-        print(" user: {}, repo: {}".format(user.login, repo.name))
-    except Exception:
-        print(" failed to get {}".format(mod_name))
-        sys.exit(-1)
-
-    tags = repo.get_tags()
-    count = tags.totalCount
-
-    if count == 0 or (count > 0 and tags[0].name != version):
-        print(" * getting last commit sha ...")
-        sha = repo.get_commits()[0].sha
-
-        try:
-            repo.create_git_ref('refs/tags/{}'.format(version), sha)
-        except GithubException:
-            print("   * could not create tag on the repo.")
-    else:
-        print(" * the tag "+version+" is found, skiping ...")
-
-    rel = repo.create_git_release(tag=version, name="Version " + version,
-                                  message=last_change,
-                                  draft=is_draft, prerelease=is_prerelease)
-
-    print(" * uploading asset ...")
-    rel.upload_asset(path=zip_file, content_type="application/zip")
-    print(" * git fetch origin ...")
-    gitrepo = Repo(os.getcwd())
-    gitrepo.remotes.origin.fetch()
-    print(" * success.")
 
 
 if __name__ == '__main__':
@@ -138,6 +85,8 @@ if __name__ == '__main__':
     DRAFT = jsn["DRAFT"]
     PRERELEASE = jsn["PRERELEASE"]
     SD_ID = jsn["SPACEDOCK_ID"]
+    FORUM_ID = jsn["FORUM_ID"]
+
 
     TOKEN = tkn["GITHUB_TOKEN"]
     SD_LOGIN = tkn["SPACEDOCK_LOGIN"]
@@ -174,10 +123,13 @@ if __name__ == '__main__':
     print("draft: {}\nprerelease: {}\n".format(DRAFT, PRERELEASE))
     print("parsing "+ CHANGELOG +" ...")   
     LAST_CHANGE = get_description(CHANGELOG)
+    import pyperclip
+    pyperclip.copy(LAST_CHANGE)
     print("- start of desc ------------")
     print(LAST_CHANGE)
     print("- end of desc --------------")
     print("")
+
 
     ZIPFILE = os.path.join(RELEASESDIR, MODNAME + "-v" + VERSION + ".zip")
     if os.path.exists(ZIPFILE):
@@ -194,7 +146,7 @@ if __name__ == '__main__':
     print("You already push your changes to a remote repo, don't you?")
     print("Create the tag, and publish a {}{} with the asset?".format("DRAFT " if DRAFT else "","PRERELEASE" if PRERELEASE else "RELEASE" ))
     if input("[y/N]: ") == 'y':
-        publish_to_github(TOKEN, MODNAME, VERSION, LAST_CHANGE, DRAFT, PRERELEASE, ZIPFILE)
+        PublishToGithub(TOKEN, MODNAME, VERSION, LAST_CHANGE, DRAFT, PRERELEASE, ZIPFILE)
 
     # ======================================
     
@@ -216,8 +168,13 @@ if __name__ == '__main__':
     if KSP_VER not in all_versions:
         print("KSP {} is not supported by Spacedock,\nlast supported version is KSP {}"
               .format(KSP_VER, all_versions[0]))
-        input("Press Enter to exit")
-        sys.exit(-1)
+        print("trying to ignore the patch... ")
+        KSP_VER = get_version(VERSIONFILE, "KSP_VERSION", True)
+        if KSP_VER not in all_versions:
+            print("KSP {} is not supported by Spacedock,\nlast supported version is KSP {}"
+                .format(KSP_VER, all_versions[0]))
+            input("Press Enter to exit")
+            sys.exit(-1)
 
     print("KSP {} is supported by Spacedock.".format(KSP_VER))
 
@@ -237,6 +194,11 @@ if __name__ == '__main__':
     print("Publish {} (KSP {}) to the Spacedock?".format(VERSION, KSP_VER))
     if input("[y/N]: ") == 'y':
         PublishToSpacedock(SD_ID, ZIPFILE, LAST_CHANGE, VERSION, KSP_VER, SD_LOGIN, SD_PASS)
+
+    if FORUM_ID:
+        import webbrowser
+        webbrowser.open(f"https://forum.kerbalspaceprogram.com/index.php?/topic/{FORUM_ID}-*", new=2, autoraise=False)
+        print("The forum page is opened.")
 
     input("Press Enter to exit")
     sys.exit(0)
