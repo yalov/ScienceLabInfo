@@ -1,0 +1,129 @@
++PART[Large_Crewed_Lab]:FOR[ScienceLabInfo]
+{
+	@name = Large_Crewed_Tech_Lab
+	@author = JDCollie
+
+	-mesh = delete
+	!MODEL,* {}
+
+    MODEL
+    {
+        model = ScienceLabInfo/Parts/DSD-1
+    }
+
+	MODEL:NEEDS[ReStock]
+	{
+		model = ReStock/Assets/Command/restock-crewed-endcap-1
+		position = 0.0, -2.26, 0.0
+		scale = 1,-1,1
+		rotation = 0, 0, 0
+	}
+	MODEL:NEEDS[ReStock]
+	{
+		model = ReStock/Assets/Command/restock-crewed-endcap-1
+		position = 0.0,2.33, 0.0
+		scale = 1,1,1
+		rotation = 0, 0, 0
+	}
+	
+	@node_stack_top:NEEDS[!ReStock] = 0.0, 2.25, 0.0, 0.0, 1.0, 0.0, 2
+	@node_stack_bottom:NEEDS[!ReStock] = 0.0, -2.18, 0.0, 0.0, -1.0, 0.0, 2
+
+	@node_stack_top:NEEDS[ReStock] = 0.0, 2.33, 0.0, 0.0, 1.0, 0.0, 2
+	@node_stack_bottom:NEEDS[ReStock] = 0.0, -2.28, 0.0, 0.0, -1.0, 0.0, 2
+
+	@CrewCapacity = 2					
+	@TechRequired = spaceExploration  // = Space Exploration (5) // default lab: advExploration (6)
+	
+	@entryCost *= 1.25
+	@cost *= 1.25
+
+	@title = #SLI_TechLab_title 
+	@description = #SLI_TechLab_desc 
+
+	@mass = 5 // 3.5
+
+	-MODULE[FlagDecal]{}
+	-MODULE[ModuleColorChanger]{}
+
+	@MODULE[ModuleScienceLab]
+	{
+		@dataStorage *= 0.8			//Max data storage. Higher =/= better per se unless you can fill the lab to near data capacity.
+		@crewsRequired = 2
+	}
+
+	@MODULE[ModuleScienceConverter]
+	{
+		@researchTime = 6 // 7	    //Larger = slower.  Exponential!
+		
+		@scienceMultiplier = 2	    // 5                  // How much science does data turn into?
+		@scienceCap *= 0.8          // 500	              // How much science can we store before having to transmit?		
+		@powerRequirement *= 0.8	// 5                  // EC/Sec to research
+	}
+
+	@INTERNAL[Mobile_Processing_Lab_Int]
+	{
+		@name = Large_Crewed_Tech_Lab_Int2 // Large_Crewed_Tech_Lab_Int
+	}
+
+	@MODULE[ModuleInventoryPart]
+	{
+		InventorySlots = 6
+		packedVolumeLimit = 300
+	}
+}
+
+
++INTERNAL[crewCabinInternals]:FOR[ScienceLabInfo]
+{
+	@name = Large_Crewed_Tech_Lab_Int2
+
+	@MODEL,* 
+	{
+		%position = 0.0, 0.0, 0.94  // 1.5
+	}
+
+	-MODULE[InternalSeat]:HAS[#seatTransformName[Seat1]] { }
+	-MODULE[InternalSeat]:HAS[#seatTransformName[Seat4]] { }
+}
+
+
+
+
++INTERNAL[GenericSpace3]:FOR[ScienceLabInfo]
+{
+	@name = GenericSpace2
+
+	!MODEL,* {}
+
+	MODEL
+	{
+		model = Squad/Spaces/GenericSpace3/model
+		position = 0.0, -1.5, 0.0
+		scale = 0.75,0.75,0.75
+	}
+	-MODULE[InternalSeat]:HAS[#seatTransformName[CenterSeat]] { }
+}
+
+
++INTERNAL[Mobile_Processing_Lab_Int]:FOR[ScienceLabInfo]
+{
+	@name = Large_Crewed_Tech_Lab_Int
+
+	-MODULE[InternalSeat],* { }
+	
+	MODULE
+	{
+		name = InternalSeat
+		seatTransformName = Seat_BackLeft
+		portraitCameraName = Camera_BackLeft
+		allowCrewHelmet = false
+	}
+	MODULE
+	{
+		name = InternalSeat
+		seatTransformName = Seat_BackRight
+		portraitCameraName = Camera_BackRight
+		allowCrewHelmet = false
+	}
+}
