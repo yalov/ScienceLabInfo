@@ -4,6 +4,9 @@
  * added PAW group
  * added new Part: early progression Lab with the data-to-science conversion 1:2, but 10 times quicker than stock MPL-LG-2.
    thanks to @Kielm and @JDCollie for the model (DSD Mobile Labs mod)
+   * tweaked texture a little bit
+   * found better IVA for the part
+   * supported Restock endcap
  * 6-Crew Lab now considered Hi-Tech Lab with the data-to-science conversion 1:6, but 10 times slower than stock MPL-LG-2.
  * Recompile for KSP 1.10
  * targeted .NET 4.7 
