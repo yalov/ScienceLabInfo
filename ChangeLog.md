@@ -1,5 +1,12 @@
 ## ChangeLog:
 
+### Version 2.0.1
+ * rename Final Rate field to Current Rate.
+   I was named "Final rate" because all modifiers are already included,
+   in contrast to just "Rate" that could be understood as "Basic rate", that need all modifiers on top.
+   However the same "Final rate" is used in the KAC for different meaning.
+
+
 ### Version 2.0.0
  * added PAW group
  * added new Part: early progression Lab with the data-to-science conversion 1:2, but 10 times quicker than stock MPL-LG-2.
