@@ -1,8 +1,9 @@
 ## ChangeLog:
 
 ### Version 2.0.2
- * Recompile for ksp 1.12.2
+ * Recompile for ksp 1.12.3
  * MM 4.2.1
+ * safety changes
 
 ### Version 2.0.1
  * rename Final Rate field to Current Rate.
