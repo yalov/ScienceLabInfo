@@ -1,11 +1,14 @@
 ## ChangeLog:
 
+### Version 2.0.2
+ * Recompile for ksp 1.12.2
+ * MM 4.2.1
+
 ### Version 2.0.1
  * rename Final Rate field to Current Rate.
-   I was named "Final rate" because all modifiers are already included,
+   It was named "Final rate" because all modifiers are already included,
    in contrast to just "Rate" that could be understood as "Basic rate", that need all modifiers on top.
    However the same "Final rate" is used in the KAC for different meaning.
-
 
 ### Version 2.0.0
  * added PAW group

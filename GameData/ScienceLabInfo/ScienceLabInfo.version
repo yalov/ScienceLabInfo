@@ -1,6 +1,7 @@
 {
   "NAME": "ScienceLabInfo",
   "URL": "https://raw.githubusercontent.com/yalov/ScienceLabInfo/master/ScienceLabInfo.version",
+  "CHANGE_LOG_URL": "https://raw.githubusercontent.com/yalov/ScienceLabInfo/master/ChangeLog.md",
   "DOWNLOAD": "https://github.com/yalov/ScienceLabInfo/releases",
   "GITHUB": {
     "USERNAME": "yalov",
@@ -9,22 +10,22 @@
   "VERSION": {
     "MAJOR": 2,
     "MINOR": 0,
-    "PATCH": 1,
+    "PATCH": 2,
     "BUILD": 0
   },
   "KSP_VERSION": {
     "MAJOR": 1,
-    "MINOR": 11,
-    "PATCH": 1
+    "MINOR": 12,
+    "PATCH": 3
   },
   "KSP_VERSION_MIN": {
     "MAJOR": 1,
-    "MINOR": 8,
+    "MINOR": 12,
     "PATCH": 0
   },
   "KSP_VERSION_MAX": {
     "MAJOR": 1,
-    "MINOR": 11,
+    "MINOR": 12,
     "PATCH": 9
   }
 }

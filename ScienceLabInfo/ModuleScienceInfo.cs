@@ -175,24 +175,25 @@ namespace ScienceLabInfo
 
         public void LateUpdate()
         {
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT)
-            {
-                LabStatus_str = ModuleSL.statusText;
-                Research_str = ModuleSC.status;
-
-                Data_str = ModuleSC.datString;
-                Science_str = ModuleSC.sciString;
-
-                Rate_str = ModuleSC.rateString;
-
-                if (ModuleSC.IsActivated)
-                    PowerConsumption_str = ModuleSC.powerRequirement + " " + Localizer.Format("#autoLOC_7001414"); // EC/s
-                else
-                    PowerConsumption_str = Localizer.Format("#autoLOC_257023"); // Inactive
-            }
-            else if (HighLogic.LoadedScene == GameScenes.EDITOR)
+            if (ModuleSC)
             {
                 Research_str = ModuleSC.status;
+
+                if (HighLogic.LoadedScene == GameScenes.FLIGHT && ModuleSL)
+                {
+                    LabStatus_str = ModuleSL.statusText;
+
+                    Data_str = ModuleSC.datString;
+                    Science_str = ModuleSC.sciString;
+
+                    Rate_str = ModuleSC.rateString;
+
+                    if (ModuleSC.IsActivated)
+                        PowerConsumption_str = ModuleSC.powerRequirement + " " + Localizer.Format("#autoLOC_7001414"); // EC/s
+                    else
+                        PowerConsumption_str = Localizer.Format("#autoLOC_257023"); // Inactive
+                }
+                
             }
         }
     }
