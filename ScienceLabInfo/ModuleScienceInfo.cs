@@ -10,50 +10,21 @@ namespace ScienceLabInfo
 {
     public class ModuleScienceInfo : PartModule
     {
-        [KSPField(guiActive = true, guiName = "#autoLOC_6001440",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
-        string LabStatus_str;  // Operational | Not Enough Crew (2/3) 
-
-        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_6001435",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
-        string Research_str;   // Inactive | Researching | No Power 
-
         // editor Research: inactive, operational
-        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#SLI_PAW_DatatoScience",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
+        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#SLI_PAW_DatatoScience")]
         string DataToScience_str;
 
-        [KSPField(guiActive = true, guiName = "#autoLOC_6001433",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
-        string Data_str;
-
-        [KSPField(guiActive = true, guiName = "#autoLOC_6001432",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
-        string Science_str;
-
-
-        [KSPField(guiActive = false, guiActiveEditor = true, guiName = "#SLI_PAW_ScientistsRequired",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
+        [KSPField(guiActive = false, guiActiveEditor = true, guiName = "#SLI_PAW_ScientistsRequired")]
         string ScientistsRequired_str;
 
-        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#SLI_PAW_LabRateModifier",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
+        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#SLI_PAW_LabRateModifier")]
         string LabModifier_str;
 
-        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#SLI_PAW_ScientistsRateModifier",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
+        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#SLI_PAW_ScientistsRateModifier")]
         string ScientistsModifier_str;
 
-        [KSPField(guiActive = true, guiName = "#SLI_PAW_FinalRate",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
-        string Rate_str;
-
-
-        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#SLI_PAW_PowerUsage",
-            groupName = "ScienceLabGroup", groupDisplayName = "#ScienceLabGroup_Name", groupStartCollapsed = false)]
+        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "#SLI_PAW_PowerUsage")]
         string PowerConsumption_str;
-
-
 
         ModuleScienceConverter ModuleSC;
         ModuleScienceLab ModuleSL;
@@ -95,22 +66,23 @@ namespace ScienceLabInfo
             ModuleSC = listMSC[0];
             ModuleSL = listMSL[0];
 
-            // --- Hide Stock Fields
-            ModuleSC.Fields["sciString"].guiActive = false;
-            ModuleSC.Fields["datString"].guiActive = false;
-            ModuleSC.Fields["rateString"].guiActive = false;
-            ModuleSC.Fields["status"].guiActive = false;
-            ModuleSC.Fields["status"].guiActiveEditor = false;
-            ModuleSL.Fields["statusText"].guiActive = false;
+            BasePAWGroup group = new BasePAWGroup("ScienceLabGroup", "#SLI_PAW_FinalRate", false);
+
+            ModuleSC.Fields["sciString"].group = group;
+            ModuleSC.Fields["datString"] .group = group;
+            ModuleSC.Fields["rateString"].group = group;
+            ModuleSC.Fields["status"]    .group = group;
+            ModuleSL.Fields["statusText"].group = group;
+
+            Fields["DataToScience_str"].group = group;
+            Fields["ScientistsRequired_str"].group = group;
+            Fields["LabModifier_str"].group = group;
+            Fields["ScientistsModifier_str"].group = group;
+            Fields["PowerConsumption_str"].group = group;
+
 
             DataToScience_str = "1:" + ModuleSC.scienceMultiplier;
-
             PowerConsumption_str = ModuleSC.powerRequirement + " " + Localizer.Format("#autoLOC_7001414"); // EC/s
-
-            if (HighLogic.LoadedScene == GameScenes.EDITOR)
-                UpdateScientistFieldsInEditor();
-            else if (HighLogic.LoadedScene == GameScenes.FLIGHT)
-                UpdateScientistFieldsInFlight();
 
             double labModifier = ModuleSC.dataProcessingMultiplier / 0.5 * Math.Pow(10, 7 - ModuleSC.researchTime);
             LabModifier_str = String.Format("×{0:F2}", labModifier);
@@ -121,9 +93,15 @@ namespace ScienceLabInfo
                 Fields["LabModifier_str"].guiActiveEditor = false;
             }
 
+            if (HighLogic.LoadedScene == GameScenes.EDITOR)
+                UpdateScientistFieldsInEditor();
+            else if (HighLogic.LoadedScene == GameScenes.FLIGHT)
+                UpdateScientistFieldsInFlight();
+
 
             GameEvents.onEditorScreenChange.Add(OnEditorScreenChange);
             GameEvents.onVesselCrewWasModified.Add(OnVesselCrewWasModified);
+            GameEvents.onKerbalLevelUp.Add(OnKerbalLevelUp);
         }
 
 
@@ -170,31 +148,6 @@ namespace ScienceLabInfo
             ScientistsModifier_str = String.Format("×{0:F2}", ScientistCount + Stars * ModuleSC.scientistBonus);
             ScientistsRequired_str = ScientistCount + "/" + ModuleSL.crewsRequired.ToString("F0") + 
                 (ScientistCount < Math.Round(ModuleSL.crewsRequired) ? " (" + Localizer.Format("#autoLOC_217388"/*Not Enough Crew*/)+")" : "" );
-        }
-
-
-        public void LateUpdate()
-        {
-            if (ModuleSC)
-            {
-                Research_str = ModuleSC.status;
-
-                if (HighLogic.LoadedScene == GameScenes.FLIGHT && ModuleSL)
-                {
-                    LabStatus_str = ModuleSL.statusText;
-
-                    Data_str = ModuleSC.datString;
-                    Science_str = ModuleSC.sciString;
-
-                    Rate_str = ModuleSC.rateString;
-
-                    if (ModuleSC.IsActivated)
-                        PowerConsumption_str = ModuleSC.powerRequirement + " " + Localizer.Format("#autoLOC_7001414"); // EC/s
-                    else
-                        PowerConsumption_str = Localizer.Format("#autoLOC_257023"); // Inactive
-                }
-                
-            }
         }
     }
 }

@@ -1,5 +1,14 @@
 ## ChangeLog:
 
+### Version 2.0.5
+ * FIX: AFTER -> FOR in Large_Crewed_Lab_6 (by Moonlington)
+
+### Version 2.0.4
+ * VABOrganizer patches
+
+### Version 2.0.3
+ * simplify code
+
 ### Version 2.0.2
  * Recompile for ksp 1.12.3
  * MM 4.2.1
